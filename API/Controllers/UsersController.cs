@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -9,9 +10,7 @@ using System.Threading.Tasks;
 namespace API.Controllers
 {
 
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
         private readonly DataContext context;            //injected context field
 
@@ -20,6 +19,7 @@ namespace API.Controllers
             this.context = context;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
@@ -28,6 +28,7 @@ namespace API.Controllers
 
 
         //  when hits api/users/3
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
