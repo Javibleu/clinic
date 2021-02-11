@@ -1,14 +1,32 @@
 <div class="container mt-5">
-  <div *ngIf="!registerMode" style="text-align: center;">
-    <h1>Find your Match</h1>
-    <p class="lead">
-      Come on in to view your matches... all you need to do is sign up!
-    </p>
-    <div class="text-center">
-      <button (click)="registerToggle()" class="btn btn-primary btn-lg mr-2">Register</button>
-      <button class="btn btn-info btn-lg mr-2">Learn More</button>
+  
+  <section id="what-we-do" class="what-we-do">
+    <div class="container">
+      <div class="section-title">
+        <h2>Connect to Canadian MDs, In Your Clinic!</h2>
+        <p>Online Referrals, Requisitions and Prescriptions for Braces, Stockings, Orthotics, and more.</p>
+      </div>
     </div>
-  </div>
+  </section><!-- End What We Do Section -->
+
+
+
+<hr>
+
+  <section style="background-size: cover;background-position: center;background-size: 100% 100%;">
+ <div class="mb-3 text-center">
+    <h2 class="mt-0 mb-4 bold text-center"></h2>
+
+    <iframe src="https://www.youtube.com/embed/3NOtMKbJ2ak" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" width="560" height="315" frameborder="0"></iframe>
+
+    <h3 class="mt-3 bold text-center">Get Started Today! Contact Us:</h3>
+
+    <h5 class=" text-center"><a href="mailto:steve@tiahealth.com">steve@tiahealth.com</a></h5>
+    <h5 class="text-center">(416) 825-0435</h5>
+
+    </div>
+  </section>
+  <hr>
 
   <div *ngIf="registerMode" class="container">
     <div class="row justify-content-center">
@@ -18,3 +36,47 @@
     </div>
   </div>
 </div>
+
+
+    <!-- ======= What We Do Section ======= -->
+    <section id="what-we-do" class="what-we-do">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>How does it works?</h2>
+          <p>This is our modern and agile system</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bxl-dribbble"></i></div>
+              <h4><a href="">Book Appointment</a></h4>
+              <p>See a doctor instantly online, without leaving your clinic. 
+                No more sending patients away to another clinic hoping they return. 
+                Patients time is valuable, they don't want to wait hours in a waiting room, they need care now.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-file"></i></div>
+              <h4><a href="">Speak to a Doctor</a></h4>
+              <p>Connect instantly with Canadian licensed physicians by phone or video, on any device. 
+                Our doctors can write referrals, prescriptions for braces, orthotics, stockings and more. Accepted by insurance.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-tachometer"></i></div>
+              <h4><a href="">Wrap Up</a></h4>
+              <p>Receive referrals, prescriptions, requisitions and any other documents you need, emailed or faxed directly to your clinic.
+                 The entire process takes only a few minutes, and your patient gets everything they need.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End What We Do Section -->

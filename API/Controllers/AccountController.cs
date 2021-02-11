@@ -1,68 +1,87 @@
-﻿using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    public class AccountController : BaseApiController
+    [ServiceFilter(typeof(LogUserActivity))]
+    [ApiController]
+    [Route("api/account")]
+    public class AccountController : ControllerBase
     {
-        private readonly DataContext context;
-        private readonly ITokenService tokenService;
-
-        public AccountController(DataContext context, ITokenService tokenService)
+        private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper)
         {
-            this.context = context;
-            this.tokenService = tokenService;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _mapper = mapper;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if (await UserExist(registerDto.Username)) return BadRequest("Username is Taken"); 
 
-            
-            using var hmac = new HMACSHA512();
+            bool userexist = await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username.ToLower());
 
-            var user = new AppUser { 
-                UserName = registerDto.Username.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key};
+            if (userexist)                                                                      //if username exist return BadRequest
+            {
+                return BadRequest("Username is taken");
+            }
 
-            context.Users.Add(user);
-            await context.SaveChangesAsync();
-            return new UserDto { Username = user.UserName ,Token = tokenService.CreateToken(user)};
+            AppUser user = _mapper.Map<AppUser>(registerDto);                                   //map registerDto to AppUser
+
+            user.UserName = registerDto.Username.ToLower();                                     //set username to lowercase
+
+            IdentityResult result = await _userManager.CreateAsync(user, registerDto.Password); //Create User using UserManager
+
+            if (!result.Succeeded) return BadRequest(result.Errors);                            //if not successfull return BadRequest
+
+            IdentityResult roleResult = await _userManager.AddToRoleAsync(user, "Member");      //Add to Role with member as default
+
+            if (!roleResult.Succeeded) return BadRequest(result.Errors);                        //if not successful return BadRequest
+
+            return new UserDto {                                   //Returns UserDto with name, token,known-as and gender
+                Username = user.UserName, 
+                Token = await _tokenService.CreateToken(user),
+                KnownAs = user.KnownAs,
+            };
         }
-
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-           var user = await context.Users.SingleOrDefaultAsync(x=> x.UserName == loginDto.Username);
-            
+            AppUser user = await _userManager.Users
+                .Include(p => p.Photos)
+                .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+
             if (user == null) return Unauthorized("Invalid username");
 
-            using var hmac = new HMACSHA512(user.PasswordSalt);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false); //login with SignInManager
 
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password)); //compute hash on the entered pass
-
-            for (int i = 0; i < computedHash.Length; i++)
+            if (!result.Succeeded) //if not succeed return Unauthorized
             {
-                if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid Password");
+                return Unauthorized();
             }
-            return new UserDto { Username = user.UserName, Token = tokenService.CreateToken(user) };
-        }
 
-            //helper class to check if user already exist
-            private async Task<bool> UserExist(string username)
-        {
-            return await context.Users.AnyAsync(x => x.UserName == username.ToLower());
-        }
+            return new UserDto      // if success return user + token
+            {
+                Username = user.UserName,
+                Token = await _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+                KnownAs = user.KnownAs,
 
+            };
+        }
     }
 }
