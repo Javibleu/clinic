@@ -20,7 +20,9 @@ namespace API.Entities
 
         public string Card { get; set; }
 
-        public AppUser OwnBy { get; set; }
+        public AppUser Contact { get; set; }
+
+        public int HealthProviderType { get; set; }
     }
 }
 

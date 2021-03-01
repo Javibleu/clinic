@@ -17,10 +17,7 @@
       <ul class="navbar-nav mr-auto">
           <ng-container *ngIf="accountService.currentUser$ | async">
               <li class="nav-item">
-                  <a class="nav-link" routerLink='/members' routerLinkActive='active' >Bucket</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" routerLink='/lists' routerLinkActive='active'>App status</a>
+                  <a class="nav-link" routerLink='/members' routerLinkActive='active' >User List</a>
               </li>
               <li class="nav-item">
                   <a class="nav-link" routerLink='/messages'routerLinkActive='active' >Messages</a>

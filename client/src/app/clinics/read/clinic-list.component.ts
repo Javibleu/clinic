@@ -11,7 +11,7 @@ import { ClinicService } from 'src/app/_services/clinic.service';
 
 export class ClinicListComponent implements OnInit {
   clinics: Clinic[];
-  displayedColumns: string[] = ['position', 'name', 'phone', 'address', 'webpage', 'account'];
+  displayedColumns: string[] = ['contact', 'name', 'phone', 'address', 'webpage', 'account'];
   datasource;
 
   constructor(private clinicService: ClinicService) { }
@@ -22,7 +22,7 @@ export class ClinicListComponent implements OnInit {
 
   loadClinics() {
     this.clinicService.getClinics().subscribe(response => {
-      //console.log(response);
+      console.log(response);
       this.clinics = response;
       this.datasource = response;
     });

@@ -1,5 +1,5 @@
-import { Component, OnInit, Output,EventEmitter } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {  FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {ClinicService} from '../../_services/clinic.service';
 
@@ -30,7 +30,8 @@ export class RegisterClinicComponent implements OnInit {
       url: [],
       email: ['', Validators.required],
       city: ['', Validators.required],
-      country: ['', Validators.required]
+      country: ['', Validators.required],
+      healthprovidertype: ['1'] // 1-Clinic 2-Pharmacy
     });
   }
 

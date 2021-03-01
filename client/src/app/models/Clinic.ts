@@ -9,4 +9,5 @@ export interface Clinic {
   email: string;
   card: string;
   ownBy: User;
+  healthProviderType: number;
  }

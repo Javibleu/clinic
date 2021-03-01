@@ -1,4 +1,4 @@
-<h2 class="text-center text-primary"> Clinic List </h2>
+<h2 class="text-center text-primary"> Health Provider List </h2>
 <hr>
 
 <table mat-table [dataSource]="this.clinics" class="mat-elevation-z8">
@@ -7,9 +7,9 @@
           The actual rendered columns are set as a property on the row definition" -->
   
     <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef> Id. </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    <ng-container matColumnDef="contact">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let element"> {{element.healthProviderType}} </td>
     </ng-container>
   
     <!-- Name Column -->

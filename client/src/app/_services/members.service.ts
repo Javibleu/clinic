@@ -81,16 +81,6 @@ export class MembersService {
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
   }
 
-  addLike(username: string): Observable<any> {
-    return this.http.post(this.baseUrl + 'likes/' + username, {}); // post(url + empty object in body)
-  }
-
-  getLikes(predicate: string, pageNumber, pageSize) {
-    let params = getPaginationHeaders(pageNumber, pageSize);
-    params = params.append('predicate', predicate);
-    return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
-  }
-
   getUserParams(): UserParams {
     return this.userParams;
   }

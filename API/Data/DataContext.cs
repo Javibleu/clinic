@@ -19,6 +19,10 @@ namespace API.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Clinic> Clinics { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Medication> Medications { get; set; }
+        public DbSet<Orthotic> Orthotics { get; set; }
+        public DbSet<Symptom> Symptoms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

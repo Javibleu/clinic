@@ -38,7 +38,7 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<Clinic>> Register([FromBody] ClinicDto clinicDto)
         {
-            var clinics = await _unitOfWork.ClinicRepository.GetClinicsAsync();
+            //var clinics = await _unitOfWork.ClinicRepository.GetClinicsAsync();
 
             Clinic clinic = _mapper.Map<Clinic>(clinicDto);                                   //map registerDto to AppUser
 
